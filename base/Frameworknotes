@@ -1,0 +1,174 @@
+Playwright Test is an end-to-end test framework for modern web apps. It bundles test runner, assertions, isolation, parallelization and rich tooling. Playwright supports Chromium, WebKit and Firefox on Windows, Linux and macOS, locally or in CI, headless or headed, with native mobile emulation for Chrome (Android) and Mobile Safari.
+
+Playwright docs - https://playwright.dev/docs/intro
+
+FEATURES OF PLAYWRIGHT :
+✔ Auto waiting (no need for many waits)
+✔ Faster execution
+✔ Cross browser testing
+✔ Parallel execution
+✔ Network interception
+✔ Built-in test runner
+
+COMMANDS :
+1. To initialize the playwright project - npm init playwright@latest
+2. To run the test - npx playwright test
+3. To show the report - npx playwright show-report
+4. To run the tests in UI mode - npx playwright test --ui
+5. To update the playwright - npm install -D @playwright/test@latest
+   npx playwright install --with-deps
+6. To check the installed version - npx playwright --version 
+7. To run the tests parallely in playwright - npx playwright test --workers=4
+
+Auto waiting means Playwright automatically waits for elements to be ready before performing an action.
+
+await page.locator('#login').click();
+
+| Category            | Playwright Method / Feature       | Use (What it does)                     | Example                                                 |
+| ------------------- | --------------------------------- | -------------------------------------- | ------------------------------------------------------- |
+| Navigation          | `page.goto()`                     | Opens a URL in the browser             | `await page.goto("https://example.com");`               |
+| Click Action        | `page.click()`                    | Clicks an element on the page          | `await page.click('#loginBtn');`                        |
+| Fill Input          | `page.fill()`                     | Enters text into input fields          | `await page.fill('#username','admin');`                 |
+| Typing              | `page.type()`                     | Types text with keyboard simulation    | `await page.type('#search','Playwright');`              |
+| Select Dropdown     | `page.selectOption()`             | Selects option from dropdown           | `await page.selectOption('#country','India');`          |
+| Checkbox            | `page.check()` / `page.uncheck()` | Checks or unchecks checkbox            | `await page.check('#agree');`                           |
+| Assertions          | `expect(locator)`                 | Validates UI elements                  | `await expect(page.locator('#msg')).toBeVisible();`     |
+| Wait                | `page.waitForSelector()`          | Waits until element appears            | `await page.waitForSelector('#result');`                |
+| Locator             | `page.locator()`                  | Finds elements using selector          | `const btn = page.locator('#submit');`                  |
+| Get Text            | `locator.textContent()`           | Gets text from element                 | `await page.locator('#title').textContent();`           |
+| Screenshot          | `page.screenshot()`               | Captures screenshot                    | `await page.screenshot({path:'test.png'});`             |
+| Keyboard            | `page.keyboard.press()`           | Simulates keyboard key press           | `await page.keyboard.press('Enter');`                   |
+| Mouse               | `page.mouse.click()`              | Performs mouse click using coordinates | `await page.mouse.click(100,200);`                      |
+| Frames              | `page.frameLocator()`             | Interacts with iframe elements         | `page.frameLocator('#frame1').locator('#btn').click();` |
+| Multiple Tabs       | `context.newPage()`               | Opens a new tab                        | `const newPage = await context.newPage();`              |
+| Handling New Window | `context.waitForEvent('page')`    | Handles newly opened window            | `const newPage = await context.waitForEvent('page');`   |
+| Popup Handling      | `page.waitForEvent('popup')`      | Captures popup window                  | `const popup = await page.waitForEvent('popup');`       |
+| Alerts              | `page.on('dialog')`               | Handles JS alerts, confirms            | `page.on('dialog', dialog => dialog.accept());`         |
+| File Upload         | `page.setInputFiles()`            | Uploads files                          | `await page.setInputFiles('#upload','file.pdf');`       |
+| File Download       | `page.waitForEvent('download')`   | Handles downloads                      | `const download = await page.waitForEvent('download');` |
+| Hover               | `locator.hover()`                 | Performs mouse hover                   | `await page.locator('#menu').hover();`                  |
+| Drag & Drop         | `locator.dragTo()`                | Drags element to target                | `await source.dragTo(target);`                          |
+| Network Mocking     | `page.route()`                    | Intercepts API calls                   | `await page.route('**/api', route => route.fulfill());` |
+| Storage State       | `context.storageState()`          | Saves login session                    | `await context.storageState({ path: 'state.json' });`   |
+| Close Browser       | `browser.close()`                 | Closes browser                         | `await browser.close();`                                |
+
+
+| Component   | What it Represents                                      | Purpose / Use                                                  | Example                                         |
+| ----------- | ------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------- |
+| **Browser** | The actual browser instance (Chromium, Firefox, WebKit) | Launches the browser and manages multiple contexts             | `const browser = await chromium.launch();`      |
+| **Context** | An isolated browser session (like an incognito window)  | Used to isolate tests, manage cookies, storage, authentication | `const context = await browser.newContext();`   |
+| **Page**    | A single tab inside a browser context                   | Used to interact with web elements (click, fill, navigate)     | `const page = await context.newPage();`         |
+| **Request** | API testing capability provided by Playwright           | Used to send HTTP requests for API testing without UI          | `const response = await request.get('/users');` |
+
+PLAYWRIGHT :
+1) Architecture
+2) Locators
+3) Waits
+4) Exceptions
+5) Frames
+6) Actions
+7) Window handling
+8) Reports
+
+HIGH LEVEL ARCHITECTURE DIAGRAM :
+
++--------------------------------------------------+
+|            User Test Code (JS/TS/Java/Python/.NET)|
++---------------------------+----------------------+
+                            |
+                            ▼
++--------------------------------------------------+
+|               Playwright Client API              |
+|   (Page, Browser, Context, Locator, etc.)        |
++--------------------------------------------------+
+                            |
+                            ▼
++--------------------------------------------------+
+|             Playwright Driver (Node.js)          |
+|     Handles orchestration and communication      |
++--------------------------------------------------+
+                            |
+                            ▼
++--------------------------------------------------+
+|        Browser-Specific Implementations          |
+|   Chromium (CDP) | Firefox | WebKit (Custom)     |
++--------------------------------------------------+
+                            |
+                            ▼
++--------------------------------------------------+
+|              Actual Browser Engines              |
+|        Chromium | Firefox | WebKit               |
++--------------------------------------------------+
+
+1) User test code layer
+
+This is the layer where automation engineers write their test scripts using Playwright APIs.
+
+🔹 Supported Languages
+JavaScript / TypeScript (native)
+Java
+Python
+.NET
+
+2️⃣ Playwright Client API Layer
+
+This layer exposes the public API used in tests. It abstracts the complexity of browser communication.
+
+| Class              | Responsibility                |
+| ------------------ | ----------------------------- |
+| `Browser`          | Represents a browser instance |
+| `BrowserContext`   | Provides isolated sessions    |
+| `Page`             | Represents a browser tab      |
+| `Frame`            | Handles iframes               |
+| `Locator`          | Robust element selection      |
+| `Request/Response` | Network interception          |
+
+3️⃣ Playwright Driver Layer (Node.js)
+
+The driver acts as the central orchestrator. It receives commands from the client API and communicates with the browsers.
+
+🔹 Responsibilities
+Manages browser lifecycle
+Handles sessions and contexts
+Implements auto-waiting and synchronization
+Coordinates communication with browser protocols
+Manages events (network, console, dialogs)
+
+| File                | Purpose              |
+| ------------------- | -------------------- |
+| `browser.ts`        | Browser management   |
+| `browserContext.ts` | Context isolation    |
+| `page.ts`           | Page orchestration   |
+| `frameManager.ts`   | Frame hierarchy      |
+| `networkManager.ts` | Network interception |
+
+4️⃣ Communication Layer (Protocols)
+🔹 Chromium – Chrome DevTools Protocol (CDP)
+Playwright communicates with Chromium using CDP.
+Enables deep browser control like network interception, tracing, and emulation.
+🔹 Firefox & WebKit – Custom Protocols
+Playwright uses patched versions of Firefox and WebKit.
+Custom protocols provide consistent cross-browser behavior.
+🔹 Transport Mechanism
+Communication occurs over WebSockets or pipes.
+Messages are exchanged in JSON-RPC format.
+
+5️⃣ Browser Layer
+
+| Browser  | Protocol | Notes                       |
+| -------- | -------- | --------------------------- |
+| Chromium | CDP      | Includes Chrome and Edge    |
+| Firefox  | Custom   | Patched by Playwright       |
+| WebKit   | Custom   | Enables Safari-like testing |
+
+🧪 Playwright Test Runner Architecture
+
+| Feature    | Description                            |
+| ---------- | -------------------------------------- |
+| Workers    | Parallel execution                     |
+| Fixtures   | Reusable test setup                    |
+| Hooks      | `beforeAll`, `afterEach`, etc.         |
+| Assertions | Jest-like `expect`                     |
+| Reporters  | HTML, JSON, JUnit                      |
+| Retries    | Automatic re-execution of failed tests |
+
