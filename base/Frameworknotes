@@ -172,3 +172,15 @@ Messages are exchanged in JSON-RPC format.
 | Reporters  | HTML, JSON, JUnit                      |
 | Retries    | Automatic re-execution of failed tests |
 
+Fixtures : Fixtures are pre-defined objects that Playwright provides to your tests automatically so you don’t have to manually set them up.
+
+✅ Most Important Built-in Fixtures
+
+🥇 1. page : Represents a single browser tab
+🥈 2. browser : Entire browser instance (Chromium, Firefox, WebKit)
+🥉 3. context : Browser context (like an incognito session)
+🧪 4. request : Used for API testing
+🎯 5. testInfo : Gives metadata about current test
+⚙️ 6. browserName : Current browser name
+🌐 7. baseURL :  From config
+🧾 8. playwright : Gives access to Playwright APIs
