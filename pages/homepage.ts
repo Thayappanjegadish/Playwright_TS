@@ -1,24 +1,24 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from '../base/BasePage';
 
-export class LoginPage extends BasePage {
+export class homepage extends BasePage {
   // Locators
-  readonly username: Locator;
-  readonly password: Locator;
-  readonly loginBtn: Locator;
+  readonly teams: Locator;
+  readonly team: Locator;
+  readonly schedule: Locator;
 
   constructor(page: Page) {
     super(page);
-
-    this.username = page.locator('#username');
-    this.password = page.locator('#password');
-    this.loginBtn = page.locator('#login');
+    this.teams = page.locator("//a[text()='Teams']");
+    this.team = page.locator("//span[text()='England']");
+    this.schedule = page.locator("//a[@title='Schedule' and text()='Schedule']");
   }
 
   // Actions
-  async login(user: string, pass: string): Promise<void> {
-    await this.fill(this.username, user);
-    await this.fill(this.password, pass);
-    await this.click(this.loginBtn);
+  async schedulePageNavigation(user: string, pass: string): Promise<void> {
+    await this.navigateTo("https://www.cricbuzz.com/");
+    await this.click(this.teams);
+    await this.click(this.team);
+    await this.click(this.schedule);
   }
 }
