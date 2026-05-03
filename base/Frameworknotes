@@ -10,7 +10,6 @@ FEATURES OF PLAYWRIGHT :
 ✔ Network interception
 ✔ Built-in test runner
 
-
 COMMANDS :
 1. To initialize the playwright project - npm init playwright@latest
 2. To run the test - npx playwright test
